@@ -46,24 +46,22 @@ jobs:
   build:
     working_directory: ~/${project_name}
     docker:
-      - image: circleci/node:6.14.1-browsers
+      - image: circleci/node:8-browsers
     steps:
       - checkout
-      - run:
-          name: install-yarn
-          command: 'curl -o- -L https://yarnpkg.com/install.sh | bash'
-      - restore_cache: # restore the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: yarn
-          command: yarn
-      - save_cache: # save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
+      # - run:
+      #     name: install-yarn
+      #     command: 'curl -o- -L https://yarnpkg.com/install.sh | bash'
+      - restore_cache:
+          key: CircleCI-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: CircleCI-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
-            - ./node_modules
+            - "node_modules"
       - run:
           name: build
-          command: 'yarn build'
+          command: 'ng build'
       - persist_to_workspace:
           root: ~/${project_name}
           paths:
@@ -71,7 +69,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:6.14.1-browsers
+      - image: circleci/node:8-browsers
     working_directory: ~/${project_name}
     steps:
       - attach_workspace:
