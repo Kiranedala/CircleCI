@@ -44,7 +44,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/circlecI
+    working_directory: ~/CircleCI
     docker:
       - image: circleci/node:8-browsers
     steps:
@@ -65,24 +65,15 @@ jobs:
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
 
   deploy:
-    
     docker:
       - image: circleci/node:8-browsers
-         working_directory: ~/circleci
+    working_directory: ~/CircleCI
     steps:
-          - run:
-                name: Show current branch
-                command: 'echo ${CIRCLE_BRANCH}'
-          - run:
-                name: Install aws cli
-                command:
-                    'sudo apt-get -y -qq install awscli'
-          - run:
-                name: Setting Signature Version 4 for S3 Request Authentication
-                command: 'aws configure set default.s3.signature_version s3v4'
-
       - attach_workspace:
-         at: ~/circleci
+         at: ~/CircleCI
+      - run:
+        name: Install aws cli
+        command: 'sudo apt-get -y -qq install awscli'
       - run:
           name: Deploy
           command: 'aws s3 sync dist s3://project-dev/ --delete'
@@ -98,3 +89,17 @@ workflows:
           filters:
             branches:
               only: master
+
+# deployment:
+#   staging:
+#     branch: master
+#     codedeploy:
+#       appname-1234:
+#         application_root: /
+#         region: us-east-1
+#         revision_location:
+#           revision_type: S3
+#           s3_location:
+#             bucket: my-bucket
+#             key_pattern: appname-1234-{BRANCH}-{SHORT_COMMIT}
+#         deployment_group: my-deployment-group
