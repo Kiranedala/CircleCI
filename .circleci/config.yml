@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/my-project
+    working_directory: ~/CircleCI
     docker:
      - image: circleci/node:6.14.1-browsers
     steps:
@@ -17,12 +17,13 @@ jobs:
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
 
   deploy:
-    working_directory: ~/my-project
+   
     docker:
         - image: circleci/node:6.14.1-browsers
+         working_directory: ~/CircleCI
       steps:
       - attach_workspace:
-         at: ~/my-project
+         at: ~/CircleCI
       - run:
           name: Deploy
           command: 'aws s3 sync ${build_folder}/ s3://${bucket}'
