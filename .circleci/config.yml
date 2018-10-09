@@ -44,7 +44,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/${project_name}
+    working_directory: ~/CircleCI
     docker:
       - image: circleci/node:8-browsers
     steps:
@@ -67,10 +67,10 @@ jobs:
   deploy:
     docker:
       - image: circleci/node:8-browsers
-    working_directory: ~/${project_name}
+    working_directory: ~/CircleCI
     steps:
       - attach_workspace:
-         at: ~/${project_name}
+         at: ~/CircleCI
       - run:
           name: Deploy
           command: 'aws s3 sync ${build_folder}/ s3://${bucket}'
