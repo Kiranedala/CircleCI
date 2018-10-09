@@ -65,9 +65,10 @@ jobs:
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
 
   deploy:
-    working_directory: ~/CircleCI
+    
     docker:
       - image: circleci/node:8-browsers
+      working_directory: ~/CircleCI
     steps:
           - run:
                 name: Show current branch
