@@ -61,7 +61,7 @@ jobs:
             - "node_modules"
       - run:
           name: build
-          command: 'ng build'
+          command: 'npm run build'
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
 
   deploy:
