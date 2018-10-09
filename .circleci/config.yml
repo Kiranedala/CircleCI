@@ -16,9 +16,16 @@ jobs:
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
           
-      deployment:
+  deployment:
   staging:
     branch: master
     codedeploy:
-      angularDemo:
+      appname-1234:
+        application_root: /
+        region: us-east-1
+        revision_location:
+          revision_type: S3
+          s3_location:
+            bucket: my-bucket
+            key_pattern: appname-1234-{BRANCH}-{SHORT_COMMIT}
         deployment_group: my-deployment-group
