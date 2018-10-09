@@ -15,4 +15,28 @@ jobs:
             - "node_modules"
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
-     
+jobs: 
+  build:
+    ....
+  deploy:
+    docker:
+      - image: circleci/node:8-browsers
+      working_directory: ~/my-project
+      steps:
+      - attach_workspace:
+         at: ~/${project_name}
+      - run:
+          name: Deploy
+          command: 'aws s3 sync ${build_folder}/ s3://${bucket}'
+
+ workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
