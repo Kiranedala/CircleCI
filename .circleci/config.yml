@@ -17,9 +17,9 @@ jobs:
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
 
   deploy:
+    working_directory: ~/my-project
     docker:
       - image: circleci/node:8-browsers
-      working_directory: ~/my-project
       steps:
       - attach_workspace:
          at: ~/my-project
