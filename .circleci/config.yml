@@ -74,7 +74,7 @@ jobs:
       - run: sudo apt-get install awscli
       - run:
           name: Deploy
-          command: 'aws s3 sync dist s3://Circle/ --delete'
+          command: 'aws s3 sync  s3://Circle/ --delete'
 
 workflows:
   version: 2
