@@ -69,16 +69,16 @@ jobs:
     docker:
       - image: circleci/node:8-browsers
     steps:
-            - run:
+          - run:
                 name: Show current branch
-                command: echo ${CIRCLE_BRANCH}
+                command: 'echo ${CIRCLE_BRANCH}'
           - run:
                 name: Install aws cli
                 command:
-                    sudo apt-get -y -qq install awscli
+                    'sudo apt-get -y -qq install awscli'
           - run:
                 name: Setting Signature Version 4 for S3 Request Authentication
-                command: aws configure set default.s3.signature_version s3v4
+                command: 'aws configure set default.s3.signature_version s3v4'
 
       - attach_workspace:
          at: ~/CircleCI
