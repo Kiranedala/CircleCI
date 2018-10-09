@@ -74,7 +74,7 @@ jobs:
       - run: sudo apt-get install awscli
       - run:
           name: Deploy
-          command: 'aws s3  sync .  s3://Circle/HelloWorld_App.zip --sse AES256 --delete'
+          command: 'aws s3  sync .  s3://Circle/--sse AES256 --delete'
 
 workflows:
   version: 2
