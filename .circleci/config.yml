@@ -16,26 +16,26 @@ jobs:
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
 
-  deploy:
+#   deploy:
    
-    docker:
-        - image: circleci/node:6.14.1-browsers
-         working_directory: ~/CircleCI
-      steps:
-      - attach_workspace:
-         at: ~/CircleCI
-      - run:
-          name: Deploy
-          command: 'aws s3 sync ${build_folder}/ s3://${bucket}'
+#     docker:
+#         - image: circleci/node:6.14.1-browsers
+#          working_directory: ~/CircleCI
+#       steps:
+#       - attach_workspace:
+#          at: ~/CircleCI
+#       - run:
+#           name: Deploy
+#           command: 'aws s3 sync ${build_folder}/ s3://${bucket}'
 
- workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
+#  workflows:
+#   version: 2
+#   build-and-deploy:
+#     jobs:
+#       - build
+#       - deploy:
+#           requires:
+#             - build
+#           filters:
+#             branches:
+#               only: master
