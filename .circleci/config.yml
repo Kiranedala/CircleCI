@@ -62,10 +62,7 @@ jobs:
       - run:
           name: build
           command: 'ng build'
-      - persist_to_workspace:
-          root: ~/${project_name}
-          paths:
-            - ${build_folder}/*
+      - un: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
 
   deploy:
     docker:
