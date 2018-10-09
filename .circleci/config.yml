@@ -62,7 +62,7 @@ jobs:
       - run:
           name: build
           command: 'ng build'
-      - un: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
+      - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
 
   deploy:
     docker:
