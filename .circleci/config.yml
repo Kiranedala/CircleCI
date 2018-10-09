@@ -74,7 +74,7 @@ jobs:
       - run: sudo apt-get install awscli
       - run:
           name: Deploy
-          command: 'aws s3  cp .  s3://Circle/  --sse AES256 --delete'
+          command: 'aws s3  cp ./home/circleci/CircleCI/  s3://Circle/  --sse AES256 --delete'
 
 workflows:
   version: 2
