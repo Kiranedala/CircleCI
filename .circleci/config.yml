@@ -16,16 +16,35 @@ jobs:
       - run: xvfb-run -a npm run test -- --watch=false --no-progress --browsers=ChromeNoSandbox
       # - run: xvfb-run -a npm run e2e -- --no-progress --config=protractor-ci.conf.js
           
-  deployment:
-  staging:
-    branch: master
-    codedeploy:
-      appname-1234:
-        application_root: /
-        region: us-east-1
-        revision_location:
-          revision_type: S3
-          s3_location:
-            bucket: my-bucket
-            key_pattern: appname-1234-{BRANCH}-{SHORT_COMMIT}
-        deployment_group: my-deployment-group
+  version: 2
+jobs:
+    # The deploy job
+    deploy:
+        working_directory: ~/my-project
+        docker:
+            - image: circleci/node:6.10-browsers
+        steps:
+            # Log the current branch
+            - run:
+                name: Show current branch
+                command: echo ${CIRCLE_BRANCH}
+            # Restore cache from the build job which contains the
+            # dist folder that needs to be deployed
+            - restore_cache:
+                key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+            # Install AWS cli
+            - run:
+                name: Install aws cli
+                command:
+                    sudo apt-get -y -qq install awscli
+            # Set the signature version for the S3 auth
+            - run:
+                name: Setting Signature Version 4 for S3 Request Authentication
+                command: aws configure set default.s3.signature_version s3v4
+            # Deploy to the S3 bucket corresponding to the current branch
+            - run:
+                name: Deploy to S3
+                command: |
+                    if [ "${CIRCLE_BRANCH}" == "${CIRCLE_BRANCH}" ]; then
+                        aws --region eu-west-2 s3 sync dist s3://project-dev/ --delete
+                    
